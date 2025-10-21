@@ -16,7 +16,7 @@ app.get("/users", async function(req, res) {
 });
 
 // POST
-app.post("/user", async function(req, res) {
+app.post("/users", async function(req, res) {
     const nom = req.body.nom
     const email = req.body.email
     await users.createUsers(nom, email);
@@ -24,7 +24,7 @@ app.post("/user", async function(req, res) {
 });
 
 // PUT
-app.put("/user/:id", async function(req, res) {
+app.put("/users/:id", async function(req, res) {
     const nom = req.body.nom
     const email = req.body.email
     await users.updateUsers(nom, email);
@@ -32,7 +32,7 @@ app.put("/user/:id", async function(req, res) {
 });
 
 // DELETE
-app.delete("/user/:id", async function(req, res) {
+app.delete("/users/:id", async function(req, res) {
     await agents.deleteUsers(req.params.id);
     res.send({"message": "Success"});
 });
