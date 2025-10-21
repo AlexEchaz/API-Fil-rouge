@@ -1,0 +1,20 @@
+Utilisateurs
+-id : int (obligatoire)
+-nom : varchar(20) (obligatoire)
+-prénom : varchar (20) (obligatoire)
+-adresse mail : varchar(100)
+-rôle : enum
+
+Posts
+-id/Utilisateurs (obligatoire)
+-nom
+-privatisation
+-texte
+
+GET : récupérez une info
+POST : introduire une info
+PUT : mettre à jour l'intégralité
+DELETE : supprimer
+PATCH : mettre à jour une partie
+
+node index.js
