@@ -18,3 +18,11 @@ DELETE : supprimer
 PATCH : mettre à jour une partie
 
 node index.js
+
+
+
+
+
+Vendredi 14
+-QCM noté
+-Oral, explication de ce qu'on a fait

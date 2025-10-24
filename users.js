@@ -1,4 +1,5 @@
 const db = require('./db')
+const jwt = require('jsonwebtoken');
 
 // Route GET pour lister tous les utilisateurs
 function getUsers() {
