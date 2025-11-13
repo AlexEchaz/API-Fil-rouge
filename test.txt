@@ -20,7 +20,70 @@ PATCH : mettre à jour une partie
 node index.js
 
 
+Acces token, Login (endpoint)
+-JWTutile
+    -encode (créer token)
+    -décode (récupère data)
+    -verify (check exp)
+-passwordUtile
+    -verify (policy)
+    -hash
+    -compare
+-login (endpoint + service)
+    -rerouver user
+    -check credentials
+    -génère accesstoken
+    -renvoie token
 
+Refresh token, Login (endpoint)
+-Faire une table refresh token
+    -prendre exemple du cours
+-dans le login rajouter
+    -génération refreshtoken
+    -persistance (chiffrage)
+    -set de refresh cookie/http only secure
+
+Logout (endpoint)
+-révoquer le refresh token en base
+-enlever le refresh token des cookies
+
+Refresh access token (endpoint)
+-vérifier la validité du refresh token, récupérer les cookies
+-si valide, renvoyer un nouvel acccess token
+-si invalide (expiré ou révoqué), renvoyer une erreur + enlever des cookies
+
+Register (endpoint)
+-créer un user (userservice)
+-login (auth service)
+
+
+sqlite3 data.db (ouvre terminal DB)
+-SELECT nom, email, password FROM USERS;
+
+{
+  "nom": "Alex1",
+  "email": "mail1@test.com",
+  "password": "MotDePasse.1"
+}
+
+Postman
+
+POST http://localhost:3000/auth/signup
+{
+  "nom": "Alex2",
+  "email": "mail2@test.com",
+  "password": "MotDePasse.2"
+}
+
+POST http://localhost:3000/auth/login
+{
+  "email": "mail1@test.com",
+  "password": "MotDePasse.1"
+}
+{
+  "message": "Connexion réussie ✅",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5..."
+}
 
 
 Vendredi 14

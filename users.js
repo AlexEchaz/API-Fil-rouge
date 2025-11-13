@@ -1,5 +1,6 @@
 const db = require('./db')
 const jwt = require('jsonwebtoken');
+const { hashPassword } = require('./AccessToken/passwordUtile');
 
 // Route GET pour lister tous les utilisateurs
 function getUsers() {
@@ -13,16 +14,32 @@ function getUsers() {
     });
 }
 
-// Route POST pour ajouter un utilisateur
-function createUsers(nom, email) {
+async function createUsers(nom, email, password) {
+  try {
+    const hashed = await hashPassword(password);
     return new Promise((resolve, reject) => {
-        db.run('INSERT INTO USERS (nom, email) VALUES (?, ?)', nom, email, (err) => {
-            if(err)
-                reject(err);
-            else
-                resolve();
-        });
+      // Vérifie si l'email existe déjà
+      db.get('SELECT * FROM USERS WHERE email = ?', [email], (err, row) => {
+        if (err) {
+          reject(err);
+        } else if (row) {
+          reject(new Error('Cet email est déjà utilisé'));
+        } else {
+          // Si l'email n'existe pas, on insère l'utilisateur
+          db.run(
+            'INSERT INTO USERS (nom, email, password) VALUES (?, ?, ?)',
+            [nom, email, hashed],
+            (err) => {
+              if (err) reject(err);
+              else resolve({ message: 'Utilisateur créé avec succès ✅' });
+            }
+          );
+        }
+      });
     });
+  } catch (err) {
+    throw new Error('Erreur lors de la création de l utilisateur');
+  }
 }
 
 // Route PUT pour mettre à jour les utilisateurs
@@ -55,37 +72,3 @@ module.exports = {
     updateUsers,
     deleteUsers
 };
-
-
-
-// Route POST pour ajouter un utilisateur
-// function createUsers(nom, email) {
-//   if (!nom || !email) {
-//     return res.status(400).json({ error: "Champs manquants" });
-//   }
-
-//   const sql = "INSERT INTO clients (nom, email) VALUES (?, ?, ?, ?)";
-//   db.query(sql, [nom, email], (err, result) => {
-//     if (err) {
-//       console.error("Erreur SQL :", err);
-//       return res.status(500).json({ error: "Erreur ajout utilisateur" });
-//     }
-//     res.status(201).json({
-//       id: result.insertId,
-//       name: nom,
-//       email : email
-//     });
-//   });
-// };
-
-// Route GET pour lister tous les utilisateurs
-// function getUsers() {
-//     db.query ('SELECT * FROM USERS', (req, res) => {
-//         if (err) {
-//             console.error("Erreur SQL :", err);
-//             return res.status(500).send ({ error: "Erreur serveur" });
-//         } else {
-//         res.json(results);
-//         }
-//     });
-// };
