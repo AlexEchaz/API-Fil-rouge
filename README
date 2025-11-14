@@ -1,0 +1,32 @@
+API-Fil-Rouge
+API REST pour la gestion des utilisateurs avec authentification JWT et refresh tokens.
+
+Description
+
+Ce projet fournit une API REST permettant :
+- L'authentification des utilisateurs via JWT.
+- La gestion des tokens d'accès et de rafraîchissement.
+- La sécurisation des routes avec des middlewares de vérification de token.
+- La gestion des utilisateurs et de leurs données dans une base SQLite (`data.db`).
+
+Structure
+-/AccessToken
+    -JWTutile.js # Fonctions pour gérer les tokens JWT
+    -login.js # Route de connexion
+    -passwordUtile.js # Fonctions de gestion de mot de passe
+    -refreshToken.js # Route pour rafraîchir le token
+-/middleware
+    -verifyToken.js # Middleware pour vérifier les JWT
+-/utils
+    -cache.js # Gestion du cache
+-/tests
+    -... # Tests unitaires
+-app.js # endpoints
+-index.js # lancmenet du serveur
+-db.js # base de données
+-register.js
+-users.js
+-.env # Variables d'environnement
+-data.db # Base de données SQLite
+
+

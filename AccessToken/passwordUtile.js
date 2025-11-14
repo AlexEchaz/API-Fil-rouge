@@ -20,7 +20,7 @@ function verifyPasswordPolicy(password) {
     if (!hasSpecialChar)
         return { valid: false, message: 'Le mot de passe doit contenir au moins un caractère spécial.' };
 
-    return { valid: true, message: 'Mot de passe valide ✅' };
+    return { valid: true, message: 'Mot de passe valide' };
 }
 
 // Hash du mot de passe

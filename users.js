@@ -31,13 +31,15 @@ async function createUsers(nom, email, password) {
             [nom, email, hashed],
             (err) => {
               if (err) reject(err);
-              else resolve({ message: 'Utilisateur créé avec succès ✅' });
+              else resolve({ message: 'Utilisateur créé avec succès' });
+              console.log("SIGNUP:", nom, email, password);
             }
           );
         }
       });
     });
   } catch (err) {
+    console.error("ERROR createUsers:", err);
     throw new Error('Erreur lors de la création de l utilisateur');
   }
 }

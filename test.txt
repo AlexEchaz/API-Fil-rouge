@@ -77,8 +77,8 @@ POST http://localhost:3000/auth/signup
 
 POST http://localhost:3000/auth/login
 {
-  "email": "mail1@test.com",
-  "password": "MotDePasse.1"
+    "email": "mail1@test.com",
+    "password": "MotDePasse.1" "NouveauMotDePasse.2"
 }
 {
   "message": "Connexion réussie ✅",
@@ -89,3 +89,97 @@ POST http://localhost:3000/auth/login
 Vendredi 14
 -QCM noté
 -Oral, explication de ce qu'on a fait
+
+Montrer que c'est bien une API REST
+Mettre des Tests unitaires
+Faire des roles
+
+
+password-change
+Authorization
+Bearer
+Content-Type
+application/json
+
+
+-L'API REST est fonctionnelle : 2pts
+-Les verbes et code HTTP sont correctement utilisés : 2pts
+-Les messages d'erreurs sont clairs : 2pts
+-L'API a un système d'authentification : 2pts
+-L'API a un système d'autorisation : 2pts
+-L'API est documentée : 2pts
+-L'API est testée : 2pts
+-L'API est optimisée : pour avoir de bonnes performances 2pts
+-L'API implémente une API tierce : 1pt
+-L'API est implémentée (Postman, UI, curl ...) : 1pt
+-Savoir expliquer et analyser son propre code : 2pts
+
+
+Route modification user, seul lui peut modifier password
+Refreshtoken fonctionne (enchaînement scénario)
+Logout supprimer refreshtoken
+Documentation plus propre
+Mise en place mémoire cache
+Tests unitaires
+
+
+Signup/création d'un utilisateur
+-POST : http://localhost:3000/auth/signup
+-Body (JSON)
+  {
+    "nom": "AlexTest",
+    "email": "alex@test2.com",
+    "password": "MotDePasse.2"
+  }
+
+Login, génération access & refresh token
+-POST : http://localhost:3000/auth/login
+-Body (JSON)
+  {
+    "email": "alex@test2.com",
+    "password": "MotDePasse.2"
+  }
+
+Accéder à /users avec un access token
+-GET : http://localhost:3000/users
+-Headers
+  -Authorization: Bearer {accessToken}
+
+Suppression d'un utilisateur
+-DELETE : http://localhost:3000/users/{userId}
+-Headers
+  -Authorization: Bearer {accessToken}
+
+Vérifier que user supprimé ne peut plus se connecter
+-POST : http://localhost:3000/auth/login
+-Body (JSON)
+  {
+    "email": "alex@test2.com",
+    "password": "MotDePasse.2"
+  }
+
+Refresh Token/nouveau access token
+-POST : http://localhost:3000/auth/refresh
+
+Logout, révocation refresh token, suppression cookie
+-POST : http://localhost:3000/auth/logout
+-Headers : doit inclure automatiquement le cookie refreshToken
+
+Accéder à /users après logout
+-GET : http://localhost:3000/users
+-Headers
+  -Authorization: Bearer {accessToken}
+
+Changer password (authentifié)
+-POST : http://localhost:3000/auth/password-change
+-Headers
+  -Authorization: Bearer {accessToken}
+  -Body (JSON)
+  {
+    "oldPassword": "MotDePasse.1",
+    "newPassword": "NouveauMot.2"
+  }
+
+Voir pourcentage test couvert
+-npm test -- --coverage
+
