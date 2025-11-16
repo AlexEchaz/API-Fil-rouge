@@ -1,26 +1,33 @@
-API-Fil-Rouge : une API REST pour la gestion des utilisateurs avec authentification JWT et refresh tokens.
+    API-Fil-Rouge
+
+Une API REST pour la gestion des utilisateurs avec authentification JWT et refresh tokens : 
 - Cette API permet de sinscrire, se connecter, s authentifier, gérer et sécuriser des utilisateurs à avec un système basé sur les JSON Web Tokens.
 
-Technologies utilisées : 
+    Technologies utilisées
+
 - J'ai principalement utilisé node.js/Express pour ce projet, j'ai décidé d'utiliser cette technologie car c'est celle avec laquelle j'avais fait mon middleware sur mon projet de stage.
 - SQLite : base de données légère et intégrée, parfaite pour un développement local.
 - bcrypt : pour le hashage des mots de passe.
 - jsonwebtoken (JWT) : gestion de l authentification.
 - Jest : tests unitaires
 
-Description : ce projet fournit une API REST permettant :
+    Description
+
+Ce projet fournit une API REST permettant :
 - l authentification des utilisateurs via JWT.
 - la gestion des AccesTokens et des RefreshTokens.
 - la sécurisation des routes avec des middlewares de vérification de token.
 - la gestion des utilisateurs et de leurs données dans une base SQLite (`data.db`).
 
-Installation
+    Installation
+
 - cloner le dépôt : "https://github.com/AlexEchaz/API-Fil-rouge.git"
 - installer les dépendances : "npm install"
 - mettre à jour le dossier .env
 - lancer le serveur : "node index.js"
 
-Structure
+    Structure
+
 -/accessToken
     -JWTutile.js # Fonctions pour gérer les tokens JWT
     -login.js # Route de connexion
@@ -40,7 +47,8 @@ Structure
 -.env # Variables d'environnement
 -data.db # Base de données SQLite
 
-Endpoints (testés sur Postman)
+    Endpoints (testés sur Postman)
+
 - POST : http://localhost:3000/auth/signup # création d'un utilisateur
     -nécessite en Body (JSON) : 
     {
@@ -48,25 +56,19 @@ Endpoints (testés sur Postman)
         "email": "alex@test2.com",
         "password": "MotDePasse.2"
     }
-
 - POST : http://localhost:3000/auth/login # Login, génération access & refresh token
     -nécessite en Body (JSON)
     {
         "email": "alex@test2.com",
         "password": "MotDePasse.2"
     }
-
 - GET : http://localhost:3000/users # Accéder à /users avec un access token
     -nécessite en Header "Authorization: Bearer {accessToken}"
-
 - DELETE : http://localhost:3000/users/{userId} # Suppression d'un utilisateur
     -nécessite en Header "Authorization: Bearer {accessToken}"
-
-- POST : http://localhost:3000/auth/refresh # génère un nouvel accessToken
-
+- POST : http://localhost:3000/auth/refresh # génère un nouveau Token
 - POST : http://localhost:3000/auth/logout # Logout, révocation refresh token et suppression cookie
     -nécessite en Header le cookie refreshToken, normalement inclus automatiquement
-
 - POST : http://localhost:3000/auth/password-change # changer le mot de passe, uniquement si authentifié
     -nécessite en Header "Authorization: Bearer {accessToken}"
     -nécessite en Body (JSON) : 
@@ -75,7 +77,23 @@ Endpoints (testés sur Postman)
         "newPassword": "NouveauMot.2"
     }
 
-Tests
+    Tests
+
 - lancer les tests avec : "npm test"
 - vérifier le taux de couverture des tests avec : "npm test -- --coverage"
 - malheureusement, 1 des tests, le test de login, ne fonctionne pas.
+
+    Performances de l'API
+
+J'ai testé les performances de mon API à l'aide de l'outil de load testing Vegeta : 
+- télécharger Vegeta : "https://github.com/tsenart/vegeta/releases"
+- dézipper le fichier
+- changer la variable d'environnement système "Path" dans "Système : paramètres avancés du Système" avec le dossier contenant le vegeta.exe
+- créer un fichier .txt dans lequel on met le format de la requête à tester en boucle : 
+    -exemple : 
+        -GET http://localhost:3000/users ou http://127.0.0.1:3000/users
+        Authorization: Bearer {AccessToken}
+- depuis git bash, taper la commande : 
+    - vegeta attack -rate=1 -duration=5m -targets=targets.txt > results-1rps.bin
+    - [programme] [commande] [nombre de requete/s] [durée] [fichier où ça prend la requete] > [fichier ou les résultats sont stockés]
+- puis observer les résultats à l'aide de la commande : "vegeta report results-1rps.bin", et si vous désirez un fichier html, tapez la commande : "vegeta plot results-1rps.bin > plot-1rps.html"
