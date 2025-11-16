@@ -81,7 +81,7 @@ POST http://localhost:3000/auth/login
     "password": "MotDePasse.1" "NouveauMotDePasse.2"
 }
 {
-  "message": "Connexion réussie ✅",
+  "message": "Connexion réussie",
   "token": "eyJhbGciOiJIUzI1NiIsInR5..."
 }
 
